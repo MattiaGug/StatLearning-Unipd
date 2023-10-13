@@ -1,0 +1,274 @@
+---
+title: "111023 Statistical Learning"
+author: "Mattia G."
+date: '2023-10-11'
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R commands notes 2
+
+
+```{r}
+weight <- c(80, 70, 82, 76, 90)
+height <- c(170, 198, 176, 181, 180)
+smoker <- c("yes", "yes", "no", "no", "yes")
+survey <- data.frame(weight, height, smoker)
+
+survey
+
+M <- matrix(1:9, ncol = 3)
+M
+
+#### list
+# same as vectors but can contain any type 
+
+Lst <- list("Fred", 3, c(4, 7, 9), M, survey)
+
+class(Lst)
+is.list(Lst)
+
+Lst[1:3]
+
+
+SubLst <- Lst[4]
+SubLst
+
+is.matrix(SubLst)
+
+A <- Lst[[4]] 
+is.list(A)
+is.matrix(A)
+
+Lst <- list(name = "Fred", n.child = 3, child.age = c(4, 7, 9), my.matrix = M, 
+            my.data = survey)
+
+Lst$n.child
+
+A <- Lst$my.matrix
+A
+
+A <- Lst[[4]]
+A
+#### function data()
+
+data() # it can be utilized for uploading data
+
+# if I input data() and press return I will get a list of data sets included in R
+```
+
+
+```{r}
+# Diameter, Height and Volume for Black Cherry Trees
+
+data("trees")
+View(trees) #to view the dataset
+
+
+#### data cars
+
+library(MASS) # package
+
+data(package = "MASS")
+
+data("Cars93")
+View(Cars93)
+
+names(Cars93)
+
+Cars93[1:5, 3]
+Cars93[1:5,"Type"]
+library(MASS) # package
+
+
+data(package = "MASS")
+
+data("Cars93")
+View(Cars93) 
+
+names(Cars93)
+
+Cars93[1:5, 3]
+Cars93[1:5,"Type"]
+Cars93$Type[1:5]
+
+#Type[1:5]  Does not work because the ds hasn't been attached
+
+attach(Cars93) # attaching the ds
+Type[1:5]
+detach(Cars93) # detaching ds
+
+```
+
+### End of introduction
+
+# Begininng of R instructions from the slides
+
+```{r}
+attach(Cars93)
+table(Type)
+
+
+freq.tb.Type <- table(Type)
+freq.tb.Type
+freq.tb.Type["Large"]
+rel.freq.tb.Type <- freq.tb.Type/sum(freq.tb.Type)
+rel.freq.tb.Type 
+
+round(rel.freq.tb.Type, digits = 2)
+
+library(xtable) #needs to be installed first
+xtable(freq.tb.Type)
+
+#### pie chart
+
+pie(freq.tb.Type)
+help("pie")
+
+barplot(freq.tb.Type)
+barplot(rel.freq.tb.Type)
+
+#### plotting more variables
+
+tb.Origin.Type <- table(Origin, Type)
+tb.Origin.Type
+
+tb.Origin.Type["USA", "Large"]
+barplot(tb.Origin.Type)
+
+barplot(tb.Origin.Type, beside = TRUE)
+
+#### add legend
+
+barplot(tb.Origin.Type, beside = TRUE, legend = TRUE)
+help("barplot")
+
+#### histograms
+
+Rear.seat.room.cm <- Rear.seat.room * 2.54
+hist(Rear.seat.room.cm)
+
+#### making it look nicer (why not)
+
+hist(Rear.seat.room.cm, xlab = "cm", ylab = "",
+     main = "Rear Seat Room", col = "orange")
+
+#### change number of bins
+
+hist(Rear.seat.room.cm, breaks = 3, xlab = "cm", ylab = "",
+     main = "Rear Seat Room", col = "orange")
+
+hist(Rear.seat.room.cm, xlab = "cm", ylab = "",
+     main = "Default number of bins", col = "orange")
+
+par(mfrow = c(1, 2))
+
+hist(Rear.seat.room.cm, xlab = "cm", ylab = "",
+     main = "Default number of bins", col = "orange")
+
+hist(Rear.seat.room.cm, breaks = 30, xlab = "cm", ylab = "",
+     main = "30 bins", col = "orange")
+
+par(mfrow = c(1, 1))
+
+range(Rear.seat.room.cm)
+
+range(Rear.seat.room.cm, na.rm = TRUE)
+
+bins <- c(48, 65, 70, 75, 92)
+
+par(mfrow = c(1, 2))
+
+hist(Rear.seat.room.cm, freq=TRUE, xlab="Rear seat room (cm)",
+     main="frequency", breaks =bins, col="orange")
+
+hist(Rear.seat.room.cm, freq=FALSE,  xlab="Rear seat room (cm)",
+     main="density", breaks=bins, col="orange")
+
+par(mfrow=c(1,1))
+
+
+#### output of the function hist()
+
+hist(Rear.seat.room.cm)
+
+h <- hist(Rear.seat.room.cm)
+h
+plot(h)
+
+#### density plot
+
+dens <- density(Rear.seat.room.cm, na.rm=TRUE)
+plot(dens, main="Kernel Density")
+
+#### compare density plot with histogram
+hist(Rear.seat.room.cm, freq=FALSE)
+lines(dens)
+
+
+#### change the bandwidth
+
+dens0.5 <- density(Rear.seat.room.cm, adjust=0.5, na.rm=TRUE)
+
+
+plot(dens0.5, main="adjust=0.5")
+lines(dens, col="blue")
+
+#### compare different bandwidths
+
+dens0.25 <- density(Rear.seat.room.cm, adjust=0.25, na.rm=TRUE)
+dens2 <- density(Rear.seat.room.cm, adjust=2, na.rm=TRUE)
+
+plot(dens0.25)
+lines(dens0.5, col="blue")
+lines(dens, col="red")
+lines(dens2, col="green")
+
+
+
+
+Rear.seat.room.cm <- Rear.seat.room * 2.54
+
+
+#### mean and median
+
+mean(Rear.seat.room.cm)
+mean(Rear.seat.room.cm, na.rm=TRUE)
+
+median(Rear.seat.room.cm, na.rm=TRUE)
+sort(Rear.seat.room.cm)[46]
+
+#### removing NA's
+
+# using the function is.na()
+is.na(Rear.seat.room.cm)
+x <- Rear.seat.room.cm[!is.na(Rear.seat.room.cm)]
+
+# using the function na.omit()
+x <- na.omit(Rear.seat.room.cm)
+
+#### variance and standard deviation
+
+s2 <- sum((x-mean(x))^2)/(length(x)-1)
+var(x)
+
+sd(x)
+sqrt(s2)
+
+#### quantiles
+
+quantile(Rear.seat.room.cm, 0.3, na.rm=TRUE)
+quantile(Rear.seat.room.cm, c(0.3, 0.6), na.rm=TRUE)
+quantile(Rear.seat.room.cm, na.rm=TRUE)
+
+
+IQR(Rear.seat.room.cm, na.rm=TRUE)
+
+```
+
