@@ -1,0 +1,100 @@
+---
+title: "24102023_Statistical_Learning"
+author: "Mattia G."
+date: '2023-10-24'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+```{r}
+#######################################
+#    PROBABILITY DISTRIBUTIONS
+# -- discrete Random Variables --
+#######################################
+
+# sample from a URN of uppercase letters
+
+urn <- LETTERS
+
+sample(urn, 1)
+sample(urn, 5)
+
+urn <- LETTERS[1:5]
+sample(urn, 5)
+sample(urn, 5, replace=TRUE)
+
+# Random seed: state of the random number generator in R
+# set.seed(): function to specify  seeds
+
+set.seed(123)
+sample(urn, 1)
+sample(urn, 5)
+
+# compare empirical behavior with expected behavior
+
+n <- 10 # increase up to 10^6
+my.sample <- sample(urn, n, replace=TRUE)
+
+barplot(table(my.sample)/n)
+abline(h=0.20, lty=2)
+
+# urn for Bernoulli random variable
+
+urn <- c(rep(1, 7), rep(0,3))
+urn
+sample(urn, 1)
+
+# (population) parameters
+
+mu <- 0.7
+sigma2 <- 0.7*0.3
+sigma2
+sigma <- sqrt(sigma2)
+sigma
+
+# sample
+
+n <- 5
+n <- 100
+n <- 100000
+out <- sample(urn, n, replace = TRUE)
+
+# sample statistics
+
+x.bar <- mean(out)
+x.bar
+
+mu-x.bar
+
+s2 <- var(out)
+s2
+
+
+sigma2-s2
+
+# binomial distribution
+
+n <- 10
+out <- sample(urn, n, replace=TRUE)
+x <- sum(out)
+x
+
+# rbinom() function
+
+# binomial
+rbinom(4, size=10, prob=0.7)
+
+# Bernoulli
+rbinom(1, size=1, prob=0.7)
+
+```
+
+
