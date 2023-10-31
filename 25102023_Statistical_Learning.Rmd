@@ -269,6 +269,8 @@ par(mfrow=c(1,1))
 
 # negative binomial distribution
 
-#plot(dnbinom(0:30, 10, 1/2), names.arg=0:30 + 10, xlab="Number of flips before 10 heads", type="h"). #Run this code chunk in RStudio
+#plot(dnbinom(0:30, 10, 1/2), names.arg=0:30 + 10, 
+# xlab="Number of flips before 10 heads", type="h"). 
+# Run this code chunk in RStudio
 
 ```
